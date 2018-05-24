@@ -23,7 +23,7 @@ app.post("/webhook", (req, res)=>{
                     // console.log(result)
                     res.json({
                         fulfillmentText: `Right now, if you exchange ${req.body.queryResult.parameters["amount"]}${req.body.queryResult.parameters["currency-from"]} to ${req.body.queryResult.parameters["currency-to"]}, you'll get ${result}${req.body.queryResult.parameters["currency-to"]}`,
-                        fulfillmentMessages: [{ text: { text: [w] }}],
+                        fulfillmentMessages: [{ text: { text: [`Right now, if you exchange ${req.body.queryResult.parameters["amount"]}${req.body.queryResult.parameters["currency-from"]} to ${req.body.queryResult.parameters["currency-to"]}, you'll get ${result}${req.body.queryResult.parameters["currency-to"]}`] }}],
                         source: ""
                     });
                 }

@@ -15,12 +15,17 @@ app.post("/webhook", (req, res)=>{
     if(!req.body) res.status(400).send({ success: 0, msg: 'Body data is empty!' })
     else if(!req.headers.masterkey || req.headers.masterkey != configs.masterKey) res.status(400).send({ success: 0, msg: 'Master key is wrong or missing!' })
     else {
-        console.log("Body receiver: " + JSON.stringify(req.body.result.parameters));
-        if(req.body.result.parameters.currency-from && req.body.result.parameters.currency-to) {
-            currency.convertCurrency(req.body.result.parameters.currency-from, req.body.result.parameters.currency-to, req.body.result.parameters.amount || 1, (err, res)=>{
+        console.log("Body receiver: " + JSON.stringify(req.body.queryResult));
+        if(req.body.queryResult && req.body.queryResult.parameters && req.body.queryResult.parameters.currency-from && req.body.queryResult.parameters.currency-to) {
+            currency.convertCurrency(req.body.queryResult.parameters.currency-from, req.body.queryResult.parameters.currency-to, req.body.queryResult.parameters.amount || 1, (err, result)=>{
                 if(err) console.error(err)
                 else {
-                    console.log(res);
+                    console.log(result)
+                    // res.json({
+                    //     fulfillmentText: `Right now, if you exchange `,
+                    //     fulfillmentMessages: [{ text: { text: [w] }}],
+                    //     source: ""
+                    // });
                 }
             });
         } else {

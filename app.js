@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 
+const configs = require('./configs.json');
 const port = process.env.PORT || 9669;
 
 let app = express();
@@ -8,8 +9,9 @@ let app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 
 app.post("/webhook", (req, res)=>{
-    console.log("Some thing is comming!");
+    console.log("Some thing is comming!", req.headers.masterKey);
     if(!req.body) res.status(400).send({ success: 0, msg: 'Body data is empty!' })
+    else if(!req.headers.masterKey || req.headers.masterKey != configs.masterKey) res.status(400).send({ success: 0, msg: 'Master key is wrong or missing!' })
     else {
         console.log("Body receiver: " + JSON.stringify(req.body));
         // console.log()

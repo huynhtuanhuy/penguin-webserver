@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 
 const configs = require('./configs.json');
 const currency = require('./currency_convert');
+const util = require('./util');
 const port = process.env.PORT || 9669;
 
 let app = express();
@@ -22,8 +23,8 @@ app.post("/webhook", (req, res)=>{
                 else {
                     // console.log(result)
                     res.json({
-                        fulfillmentText: `Right now, if you exchange ${req.body.queryResult.parameters["amount"]}${req.body.queryResult.parameters["currency-from"]} to ${req.body.queryResult.parameters["currency-to"]}, you'll get ${result}${req.body.queryResult.parameters["currency-to"]}`,
-                        fulfillmentMessages: [{ text: { text: [`Right now, if you exchange ${req.body.queryResult.parameters["amount"]}${req.body.queryResult.parameters["currency-from"]} to ${req.body.queryResult.parameters["currency-to"]}, you'll get ${result}${req.body.queryResult.parameters["currency-to"]}`] }}],
+                        fulfillmentText: `Right now, if you exchange ${util.numberFormat(req.body.queryResult.parameters["amount"])}${req.body.queryResult.parameters["currency-from"]} to ${req.body.queryResult.parameters["currency-to"]}, you'll get ${result}${req.body.queryResult.parameters["currency-to"]}`,
+                        fulfillmentMessages: [{ text: { text: [`Right now, if you exchange ${util.numberFormat(req.body.queryResult.parameters["amount"])}${req.body.queryResult.parameters["currency-from"]} to ${req.body.queryResult.parameters["currency-to"]}, you'll get ${util.numberFormat(result)}${req.body.queryResult.parameters["currency-to"]}`] }}],
                         source: ""
                     });
                 }

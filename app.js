@@ -7,6 +7,7 @@ const port = process.env.PORT || 9669;
 let app = express();
 
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 app.post("/webhook", (req, res)=>{
     console.log("Some thing is comming!", JSON.stringify(req.headers.masterkey));

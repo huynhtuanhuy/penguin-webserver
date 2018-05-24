@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 
 const configs = require('./configs.json');
+const currency = require('./currency_convert');
 const port = process.env.PORT || 9669;
 
 let app = express();
@@ -14,8 +15,17 @@ app.post("/webhook", (req, res)=>{
     if(!req.body) res.status(400).send({ success: 0, msg: 'Body data is empty!' })
     else if(!req.headers.masterkey || req.headers.masterkey != configs.masterKey) res.status(400).send({ success: 0, msg: 'Master key is wrong or missing!' })
     else {
-        console.log("Body receiver: " + JSON.stringify(req.body));
-        // console.log()
+        console.log("Body receiver: " + JSON.stringify(req.body.result.parameters));
+        if(req.body.result.parameters.currency-from && req.body.result.parameters.currency-to) {
+            currency.convertCurrency(req.body.result.parameters.currency-from, req.body.result.parameters.currency-to, req.body.result.parameters.amount || 1, (err, res)=>{
+                if(err) console.error(err)
+                else {
+                    console.log(res);
+                }
+            });
+        } else {
+            res.status(400).send({ success: 0, msg: 'Nothing to convert' });
+        }
     }
 });
 

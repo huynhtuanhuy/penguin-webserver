@@ -23,24 +23,22 @@ app.post("/webhook", (req, res)=>{
                     currency.convertCurrency(req.body.result.parameters["currency-from"], req.body.result.parameters["currency-to"], req.body.result.parameters["amount"] || 1, (err, result)=>{
                         if(err) console.error(err)
                         else {
-                            console.log(`Right now, if you exchange ${util.numberFormat(req.body.result.parameters["amount"])}${req.body.result.parameters["currency-from"]} to ${req.body.result.parameters["currency-to"]}, you'll get ${util.numberFormat(result)}${req.body.result.parameters["currency-to"]}`)
                             res.json({
-                                displayText: `Right now, if you exchange ${util.numberFormat(req.body.result.parameters["amount"])}${req.body.result.parameters["currency-from"]} to ${req.body.result.parameters["currency-to"]}, you'll get ${util.numberFormat(result)}${req.body.result.parameters["currency-to"]}`,
-                                // displayText: [{ text: { text: [`Right now, if you exchange ${util.numberFormat(req.body.result.parameters["amount"])}${req.body.result.parameters["currency-from"]} to ${req.body.result.parameters["currency-to"]}, you'll get ${util.numberFormat(result)}${req.body.result.parameters["currency-to"]}`] }}],
+                                contextOut: [`Right now, if you exchange ${util.numberFormat(req.body.result.parameters["amount"])}${req.body.result.parameters["currency-from"]} to ${req.body.result.parameters["currency-to"]}, you'll get ${util.numberFormat(result)}${req.body.result.parameters["currency-to"]}`],
                                 source: "Penguin Webhook"
                             });
                         }
                     });
                 } else {
                     res.json({
-                        displayText: "Could you provide me the details?",
+                        contextOut: ["Could you provide me more details?"],
                         source: "Penguin Webhook"
                     });
                 }
                 break;
             default:
                 res.json({
-                    displayText: "Sorry, something went wrong and i can't do this for you right now.",
+                    contextOut: ["Sorry, something went wrong and i can't do this for you right now."],
                     source: "Penguin Webhook"
                 });
                 break;

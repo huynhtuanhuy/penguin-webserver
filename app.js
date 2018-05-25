@@ -12,11 +12,9 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 app.post("/webhook", (req, res)=>{
-    console.log("Some thing is comming!", JSON.stringify(req.headers.masterkey));
     if(!req.body) res.status(400).send({ success: 0, msg: 'Body data is empty!' })
     else if(!req.headers.masterkey || req.headers.masterkey != configs.masterKey) res.status(400).send({ success: 0, msg: 'Master key is wrong or missing!' })
     else {
-        console.log("Body receiver: " + req.body.result.action);
         switch (req.body.result.action) {
             case "currency.convert":
                 if(req.body.result && req.body.result.parameters && req.body.result.parameters["currency-from"] && req.body.result.parameters["currency-to"]) {
@@ -24,7 +22,7 @@ app.post("/webhook", (req, res)=>{
                         if(err) console.error(err)
                         else {
                             res.json({
-                                messages: [ { type: 0, speech: `Right now, if you exchange ${util.numberFormat(req.body.result.parameters["amount"])}${req.body.result.parameters["currency-from"]} to ${req.body.result.parameters["currency-to"]}, you'll get ${util.numberFormat(result)}${req.body.result.parameters["currency-to"]}` }],
+                                messages: [ { type: 0, speech: `Right now, if you exchange ${util.numberFormat(req.body.result.parameters["amount"])} ${req.body.result.parameters["currency-from"]} to ${req.body.result.parameters["currency-to"]}, you'll get ${util.numberFormat(result)} ${req.body.result.parameters["currency-to"]}` }],
                                 source: "Penguin Webhook"
                             });
                         }
@@ -32,6 +30,19 @@ app.post("/webhook", (req, res)=>{
                 } else {
                     res.json({
                         messages: [ { type: 0, speech: "Could you provide me more details?" }],
+                        source: "Penguin Webhook"
+                    });
+                }
+                break;
+            case "smalltalk.agent.acquaintance":
+                if(req.body.result && req.body.result.fulfillment && req.body.result.fulfillment.messages) {
+                    res.json({
+                        messages: req.body.result.fulfillment.messages,
+                        source: "Penguin Webhook"
+                    });
+                } else {
+                    res.json({
+                        messages: [ { type: 0, speech: "I didn't get that." }],
                         source: "Penguin Webhook"
                     });
                 }

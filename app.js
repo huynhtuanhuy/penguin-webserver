@@ -23,8 +23,8 @@ app.post("/webhook", (req, res)=>{
                 else {
                     console.log(`Right now, if you exchange ${util.numberFormat(req.body.result.parameters["amount"])}${req.body.result.parameters["currency-from"]} to ${req.body.result.parameters["currency-to"]}, you'll get ${util.numberFormat(result)}${req.body.result.parameters["currency-to"]}`)
                     res.json({
-                        fulfillmentText: `Right now, if you exchange ${util.numberFormat(req.body.result.parameters["amount"])}${req.body.result.parameters["currency-from"]} to ${req.body.result.parameters["currency-to"]}, you'll get ${util.numberFormat(result)}${req.body.result.parameters["currency-to"]}`,
-                        fulfillmentMessages: [{ text: { text: [`Right now, if you exchange ${util.numberFormat(req.body.result.parameters["amount"])}${req.body.result.parameters["currency-from"]} to ${req.body.result.parameters["currency-to"]}, you'll get ${util.numberFormat(result)}${req.body.result.parameters["currency-to"]}`] }}],
+                        displayText: `Right now, if you exchange ${util.numberFormat(req.body.result.parameters["amount"])}${req.body.result.parameters["currency-from"]} to ${req.body.result.parameters["currency-to"]}, you'll get ${util.numberFormat(result)}${req.body.result.parameters["currency-to"]}`,
+                        // displayText: [{ text: { text: [`Right now, if you exchange ${util.numberFormat(req.body.result.parameters["amount"])}${req.body.result.parameters["currency-from"]} to ${req.body.result.parameters["currency-to"]}, you'll get ${util.numberFormat(result)}${req.body.result.parameters["currency-to"]}`] }}],
                         source: ""
                     });
                 }

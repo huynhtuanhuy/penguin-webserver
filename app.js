@@ -15,8 +15,9 @@ app.post("/webhook", (req, res)=>{
     if(!req.body) res.status(400).send({ success: 0, msg: 'Body data is empty!' })
     else if(!req.headers.masterkey || req.headers.masterkey != configs.masterKey) res.status(400).send({ success: 0, msg: 'Master key is wrong or missing!' })
     else {
-        switch (req.body.result.action) {
-            case "currency.convert":
+        let actions = req.body.result.action.split(".");
+        switch (actions[0]) {
+            case "currency":
                 if(req.body.result && req.body.result.parameters && req.body.result.parameters["currency-from"] && req.body.result.parameters["currency-to"]) {
                     currency.convertCurrency(req.body.result.parameters["currency-from"], req.body.result.parameters["currency-to"], req.body.result.parameters["amount"] || 1, (err, result)=>{
                         if(err) console.error(err)
@@ -34,10 +35,10 @@ app.post("/webhook", (req, res)=>{
                     });
                 }
                 break;
-            case "smalltalk.agent.acquaintance":
-                if(req.body.result && req.body.result.fulfillment && req.body.result.fulfillment.messages) {
+            case "smalltalk":
+                if(req.body.result && req.body.result.fulfillment && req.body.result.fulfillment.speech) {
                     res.json({
-                        messages: [ req.body.result.fulfillment.messages ],
+                        messages: [ { type: 0, speech: req.body.result.fulfillment.speech } ],
                         source: "Penguin Webhook"
                     });
                 } else {

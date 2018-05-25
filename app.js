@@ -24,7 +24,7 @@ app.post("/webhook", (req, res)=>{
                         if(err) console.error(err)
                         else {
                             res.json({
-                                contextOut: [`Right now, if you exchange ${util.numberFormat(req.body.result.parameters["amount"])}${req.body.result.parameters["currency-from"]} to ${req.body.result.parameters["currency-to"]}, you'll get ${util.numberFormat(result)}${req.body.result.parameters["currency-to"]}`],
+                                messages: { w: { w: [`Right now, if you exchange ${util.numberFormat(req.body.result.parameters["amount"])}${req.body.result.parameters["currency-from"]} to ${req.body.result.parameters["currency-to"]}, you'll get ${util.numberFormat(result)}${req.body.result.parameters["currency-to"]}`] } },
                                 source: "Penguin Webhook"
                             });
                         }

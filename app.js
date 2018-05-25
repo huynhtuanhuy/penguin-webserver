@@ -37,7 +37,7 @@ app.post("/webhook", (req, res)=>{
             case "smalltalk.agent.acquaintance":
                 if(req.body.result && req.body.result.fulfillment && req.body.result.fulfillment.messages) {
                     res.json({
-                        messages: req.body.result.fulfillment.messages,
+                        messages: [ req.body.result.fulfillment.messages ],
                         source: "Penguin Webhook"
                     });
                 } else {

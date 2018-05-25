@@ -35,19 +35,6 @@ app.post("/webhook", (req, res)=>{
                     });
                 }
                 break;
-            case "smalltalk":
-                if(req.body.result && req.body.result.fulfillment && req.body.result.fulfillment.speech) {
-                    res.json({
-                        messages: [ { type: 0, speech: req.body.result.fulfillment.speech } ],
-                        source: "Penguin Webhook"
-                    });
-                } else {
-                    res.json({
-                        messages: [ { type: 0, speech: "I didn't get that." }],
-                        source: "Penguin Webhook"
-                    });
-                }
-                break;
             default:
                 res.json({
                     messages: [ { type: 0, speech: "I didn't get that." }],

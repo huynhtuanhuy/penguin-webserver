@@ -16,15 +16,15 @@ app.post("/webhook", (req, res)=>{
     if(!req.body) res.status(400).send({ success: 0, msg: 'Body data is empty!' })
     else if(!req.headers.masterkey || req.headers.masterkey != configs.masterKey) res.status(400).send({ success: 0, msg: 'Master key is wrong or missing!' })
     else {
-        console.log("Body receiver: " + JSON.stringify(req.body.queryResult));
-        if(req.body.queryResult && req.body.queryResult.parameters && req.body.queryResult.parameters["currency-from"] && req.body.queryResult.parameters["currency-to"]) {
-            currency.convertCurrency(req.body.queryResult.parameters["currency-from"], req.body.queryResult.parameters["currency-to"], req.body.queryResult.parameters["amount"] || 1, (err, result)=>{
+        console.log("Body receiver: " + JSON.stringify(req.body));
+        if(req.body.results && req.body.results.parameters && req.body.results.parameters["currency-from"] && req.body.results.parameters["currency-to"]) {
+            currency.convertCurrency(req.body.results.parameters["currency-from"], req.body.results.parameters["currency-to"], req.body.results.parameters["amount"] || 1, (err, result)=>{
                 if(err) console.error(err)
                 else {
                     // console.log(result)
                     res.json({
-                        fulfillmentText: `Right now, if you exchange ${util.numberFormat(req.body.queryResult.parameters["amount"])}${req.body.queryResult.parameters["currency-from"]} to ${req.body.queryResult.parameters["currency-to"]}, you'll get ${result}${req.body.queryResult.parameters["currency-to"]}`,
-                        fulfillmentMessages: [{ text: { text: [`Right now, if you exchange ${util.numberFormat(req.body.queryResult.parameters["amount"])}${req.body.queryResult.parameters["currency-from"]} to ${req.body.queryResult.parameters["currency-to"]}, you'll get ${util.numberFormat(result)}${req.body.queryResult.parameters["currency-to"]}`] }}],
+                        fulfillmentText: "",
+                        fulfillmentMessages: [{ text: { text: [`Right now, if you exchange ${util.numberFormat(req.body.results.parameters["amount"])}${req.body.results.parameters["currency-from"]} to ${req.body.results.parameters["currency-to"]}, you'll get ${util.numberFormat(result)}${req.body.results.parameters["currency-to"]}`] }}],
                         source: ""
                     });
                 }

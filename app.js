@@ -27,22 +27,26 @@ app.post("/webhook", (req, res)=>{
                         console.log(req.body.result.parameters["currency-from"])
                         console.log(req.body.result.parameters["currency-to"])
                         console.log(util.numberFormat(result))
-                        console.log(`Right now, if you exchange ${util.numberFormat(req.body.result.parameters["amount"])} ${req.body.result.parameters["currency-from"]} to ${req.body.result.parameters["currency-to"]}, you'll get ${util.numberFormat(result)} ${req.body.result.parameters["currency-to"]}`)
-                        res.send({
-                            messages: [{
-                                type: 0,
-                                speech: `Right now, if you exchange ${util.numberFormat(req.body.result.parameters["amount"])} ${req.body.result.parameters["currency-from"]} to ${req.body.result.parameters["currency-to"]}, you'll get ${util.numberFormat(result)} ${req.body.result.parameters["currency-to"]}`
-                            }],
+                        let data = `Right now, if you exchange ${util.numberFormat(req.body.result.parameters["amount"])} ${req.body.result.parameters["currency-from"]} to ${req.body.result.parameters["currency-to"]}, you'll get ${util.numberFormat(result)} ${req.body.result.parameters["currency-to"]}`;
+                        console.log(data)
+                        return res.send({
+                            messages: [ { type: 0, speech: data }],
                             source: "Penguin Webhook"
                         });
                     }
                 });
             } else {
-                res.send({
+                return res.send({
                     messages: [ { type: 0, speech: "Could you provide me more details?" }],
                     source: "Penguin Webhook"
                 });
             }
+        } else {
+            console.log("abc")
+            return res.send({
+                messages: [ { type: 0, speech: "I didn't get that." }],
+                source: "Penguin Webhook"
+            });
         }
     }
 });

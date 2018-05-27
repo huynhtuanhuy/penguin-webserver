@@ -27,6 +27,7 @@ app.post("/webhook", (req, res)=>{
                         console.log(req.body.result.parameters["currency-from"])
                         console.log(req.body.result.parameters["currency-to"])
                         console.log(util.numberFormat(result))
+                        console.log(`Right now, if you exchange ${util.numberFormat(req.body.result.parameters["amount"])} ${req.body.result.parameters["currency-from"]} to ${req.body.result.parameters["currency-to"]}, you'll get ${util.numberFormat(result)} ${req.body.result.parameters["currency-to"]}`)
                         res.send({
                             messages: [{
                                 type: 0,

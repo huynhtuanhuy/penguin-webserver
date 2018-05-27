@@ -4,7 +4,6 @@ const bodyParser = require('body-parser');
 const configs = require('./configs.json');
 const currency = require('./currency_convert');
 const util = require('./util');
-const port = process.env.PORT || 9669;
 
 let app = express();
 
@@ -12,6 +11,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 app.post("/webhook", (req, res)=>{
+    console.log(req.headers.masterkey)
+    console.log(req.body)
     if(!req.body) res.status(400).send({ success: 0, msg: 'Body data is empty!' })
     else if(!req.headers.masterkey || req.headers.masterkey != configs.masterKey) res.status(400).send({ success: 0, msg: 'Master key is wrong or missing!' })
     else {
@@ -48,6 +49,8 @@ app.post("/webhook", (req, res)=>{
 app.use("/", (req, res)=>{
     res.send("Penguin ver1");
 });
+
+const port = process.env.PORT || 9669;
 
 app.listen(port, (err)=>{
     if(err) console.error(err)

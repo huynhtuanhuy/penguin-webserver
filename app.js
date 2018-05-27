@@ -12,13 +12,13 @@ app.use(bodyParser.json());
 
 app.post("/webhook", (req, res)=>{
     console.log(req.headers.masterkey)
-    console.log(req.body)
     if(!req.body) res.status(400).send({ success: 0, msg: 'Body data is empty!' })
     else if(!req.headers.masterkey || req.headers.masterkey != configs.masterKey) res.status(400).send({ success: 0, msg: 'Master key is wrong or missing!' })
     else {
         let actions = req.body.result.action.split(".");
         switch (actions[0]) {
             case "currency":
+            console.log(req.body)
                 if(req.body.result && req.body.result.parameters && req.body.result.parameters["currency-from"] && req.body.result.parameters["currency-to"]) {
                     currency.convertCurrency(req.body.result.parameters["currency-from"], req.body.result.parameters["currency-to"], req.body.result.parameters["amount"] || 1, (err, result)=>{
                         if(err) console.error(err)

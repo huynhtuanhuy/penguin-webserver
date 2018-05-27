@@ -11,7 +11,6 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 app.post("/webhook", (req, res)=>{
-    console.log(req.headers.masterkey)
     if(!req.body) res.status(400).send({ success: 0, msg: 'Body data is empty!' })
     else if(!req.headers.masterkey || req.headers.masterkey != configs.masterKey) res.status(400).send({ success: 0, msg: 'Master key is wrong or missing!' })
     else {
@@ -20,14 +19,14 @@ app.post("/webhook", (req, res)=>{
             case "currency":
                 if(req.body.result && req.body.result.parameters && req.body.result.parameters["currency-from"] && req.body.result.parameters["currency-to"]) {
                     currency.convertCurrency(req.body.result.parameters["currency-from"], req.body.result.parameters["currency-to"], req.body.result.parameters["amount"] || 1, (err, result)=>{
-                        
-                console.log(result)
                         if(err) console.error(err)
                         else {
-                            res.json({
-                                messages: [ { type: 0, speech: `Right now, if you exchange ${util.numberFormat(req.body.result.parameters["amount"])} ${req.body.result.parameters["currency-from"]} to ${req.body.result.parameters["currency-to"]}, you'll get ${util.numberFormat(result)} ${req.body.result.parameters["currency-to"]}` }],
-                                source: "Penguin Webhook"
-                            });
+                            res.send(JSON.stringify(
+                                {
+                                    messages: [ { type: 0, speech: `Right now, if you exchange ${util.numberFormat(req.body.result.parameters["amount"])} ${req.body.result.parameters["currency-from"]} to ${req.body.result.parameters["currency-to"]}, you'll get ${util.numberFormat(result)} ${req.body.result.parameters["currency-to"]}` }],
+                                    source: "Penguin Webhook"
+                                }
+                            ));
                         }
                     });
                 } else {

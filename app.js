@@ -18,6 +18,7 @@ app.post("/webhook", (req, res)=>{
     else if(!req.headers.masterkey || req.headers.masterkey != configs.masterKey) res.status(400).send({ success: 0, msg: 'Master key is wrong or missing!' })
     else {
         let actions = req.body.result && req.body.result.action ? req.body.result.action : null;
+        console.log(actions)
         if(actions == "currency.convert") {
             if(req.body.result && req.body.result.parameters && req.body.result.parameters["currency-from"] && req.body.result.parameters["currency-to"]) {
                 currency.convertCurrency(req.body.result.parameters["currency-from"], req.body.result.parameters["currency-to"], req.body.result.parameters["amount"] || 1, (err, result)=>{

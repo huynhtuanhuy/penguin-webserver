@@ -33,6 +33,7 @@ app.post("/webhook", (req, res)=>{
                             messages: [ { type: 0, speech: data }],
                             source: "Penguin Webhook"
                         });
+                        return false;
                     }
                 });
             } else {
@@ -40,6 +41,7 @@ app.post("/webhook", (req, res)=>{
                     messages: [ { type: 0, speech: "Could you provide me more details?" }],
                     source: "Penguin Webhook"
                 });
+                return false;
             }
         } else {
             console.log("abc")
@@ -47,6 +49,7 @@ app.post("/webhook", (req, res)=>{
             //     messages: [ { type: 0, speech: "I didn't get that." }],
             //     source: "Penguin Webhook"
             // });
+            return false;
         }
     }
 });

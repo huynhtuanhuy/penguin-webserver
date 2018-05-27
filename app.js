@@ -17,7 +17,7 @@ app.post("/webhook", (req, res)=>{
     if(!req.body) res.status(400).send({ success: 0, msg: 'Body data is empty!' })
     else if(!req.headers.masterkey || req.headers.masterkey != configs.masterKey) res.status(400).send({ success: 0, msg: 'Master key is wrong or missing!' })
     else {
-        let actions = req.body.result.action.split(".");
+        let actions = req.body.result && req.body.result.action ? req.body.result.action.split(".");
         switch (actions[0]) {
             case "currency":
                 if(req.body.result && req.body.result.parameters && req.body.result.parameters["currency-from"] && req.body.result.parameters["currency-to"]) {

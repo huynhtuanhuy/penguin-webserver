@@ -18,22 +18,18 @@ app.post("/webhook", (req, res)=>{
     else if(!req.headers.masterkey || req.headers.masterkey != configs.masterKey) res.status(400).send({ success: 0, msg: 'Master key is wrong or missing!' })
     else if(req.body.result && req.body.result.action) {
         let actions = req.body.result.action;
-        console.log(actions)
         if(actions == "currency.convert") {
             if(req.body.result && req.body.result.parameters && req.body.result.parameters["currency-from"] && req.body.result.parameters["currency-to"]) {
                 currency.convertCurrency(req.body.result.parameters["currency-from"], req.body.result.parameters["currency-to"], req.body.result.parameters["amount"] || 1, (err, result)=>{
                     if(err) console.error(err)
                     else {
-                        console.log(util.numberFormat(req.body.result.parameters["amount"]))
-                        console.log(req.body.result.parameters["currency-from"])
-                        console.log(req.body.result.parameters["currency-to"])
-                        console.log(util.numberFormat(result))
                         let data = `Right now, if you exchange ${util.numberFormat(req.body.result.parameters["amount"])} ${req.body.result.parameters["currency-from"]} to ${req.body.result.parameters["currency-to"]}, you'll get ${util.numberFormat(result)} ${req.body.result.parameters["currency-to"]}`;
                         let jsonData = JSON.stringify({
                             messages: [{ type: 0, speech: data }],
                             source: "Penguin Webhook"
                         })
-                        res.json(jsonData);
+                        console.log(jsonData)
+                        res.status(200).send();
                     }
                 });
             } else {

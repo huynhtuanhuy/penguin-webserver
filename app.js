@@ -19,22 +19,23 @@ app.post("/webhook", (req, res)=>{
     else {
         let actions = req.body.result && req.body.result.action ? req.body.result.action.split(".") : "";
         switch (actions[0]) {
-            case "currency":
-                if(req.body.result && req.body.result.parameters && req.body.result.parameters["currency-from"] && req.body.result.parameters["currency-to"]) {
-                    currency.convertCurrency(req.body.result.parameters["currency-from"], req.body.result.parameters["currency-to"], req.body.result.parameters["amount"] || 1, (err, result)=>{
-                        if(err) console.error(err)
-                        else {
-                            return res.json({
-                                messages: [ { type: 0, speech: `Right now, if you exchange ${util.numberFormat(req.body.result.parameters["amount"])} ${req.body.result.parameters["currency-from"]} to ${req.body.result.parameters["currency-to"]}, you'll get ${util.numberFormat(result)} ${req.body.result.parameters["currency-to"]}` }],
-                                source: "Penguin Webhook"
-                            });
-                        }
-                    });
-                } else {
-                    return res.json({
-                        messages: [ { type: 0, speech: "Could you provide me more details?" }],
-                        source: "Penguin Webhook"
-                    });
+            case "currency": {
+                    if(req.body.result && req.body.result.parameters && req.body.result.parameters["currency-from"] && req.body.result.parameters["currency-to"]) {
+                        currency.convertCurrency(req.body.result.parameters["currency-from"], req.body.result.parameters["currency-to"], req.body.result.parameters["amount"] || 1, (err, result)=>{
+                            if(err) console.error(err)
+                            else {
+                                return res.json({
+                                    messages: [ { type: 0, speech: `Right now, if you exchange ${util.numberFormat(req.body.result.parameters["amount"])} ${req.body.result.parameters["currency-from"]} to ${req.body.result.parameters["currency-to"]}, you'll get ${util.numberFormat(result)} ${req.body.result.parameters["currency-to"]}` }],
+                                    source: "Penguin Webhook"
+                                });
+                            }
+                        });
+                    } else {
+                        return res.json({
+                            messages: [ { type: 0, speech: "Could you provide me more details?" }],
+                            source: "Penguin Webhook"
+                        });
+                    }
                 }
                 break;
             default:

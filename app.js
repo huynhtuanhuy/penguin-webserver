@@ -25,12 +25,10 @@ app.post("/webhook", (req, res)=>{
                     if(err) console.error(err)
                     else {
                         let data = `Right now, if you exchange ${util.numberFormat(req.body.result.parameters["amount"])} ${req.body.result.parameters["currency-from"]} to ${req.body.result.parameters["currency-to"]}, you'll get ${util.numberFormat(result)} ${req.body.result.parameters["currency-to"]}`;
-                        let jsonData = JSON.stringify({
+                        res.send({
                             messages: [{ type: 0, speech: data }],
                             source: "Penguin Webhook"
-                        })
-                        console.log(jsonData)
-                        res.status(200).send();
+                        });
                     }
                 });
             } else {
@@ -40,11 +38,10 @@ app.post("/webhook", (req, res)=>{
                 });
             }
         } else {
-            console.log("abc")
-            // return res.send({
-            //     messages: [ { type: 0, speech: "I didn't get that." }],
-            //     source: "Penguin Webhook"
-            // });
+            return res.send({
+                messages: [ { type: 0, speech: "I didn't get that." }],
+                source: "Penguin Webhook"
+            });
         }
     }
 });

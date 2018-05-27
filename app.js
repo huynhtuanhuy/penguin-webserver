@@ -24,24 +24,18 @@ app.post("/webhook", (req, res)=>{
                     if(err) console.error(err)
                     else {
                         console.log(req.body)
-                        return res.send({
+                        res.send({
                             messages: [ { type: 0, speech: `Right now, if you exchange ${util.numberFormat(req.body.result.parameters["amount"])} ${req.body.result.parameters["currency-from"]} to ${req.body.result.parameters["currency-to"]}, you'll get ${util.numberFormat(result)} ${req.body.result.parameters["currency-to"]}` }],
                             source: "Penguin Webhook"
                         });
                     }
                 });
             } else {
-                return res.send({
+                res.send({
                     messages: [ { type: 0, speech: "Could you provide me more details?" }],
                     source: "Penguin Webhook"
                 });
             }
-        } else {
-            console.log("abc")
-            return res.send({
-                messages: [ { type: 0, speech: "I didn't get that." }],
-                source: "Penguin Webhook"
-            });
         }
     }
 });

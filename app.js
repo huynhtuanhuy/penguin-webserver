@@ -23,9 +23,15 @@ app.post("/webhook", (req, res)=>{
                 currency.convertCurrency(req.body.result.parameters["currency-from"], req.body.result.parameters["currency-to"], req.body.result.parameters["amount"] || 1, (err, result)=>{
                     if(err) console.error(err)
                     else {
-                        console.log(req.body)
+                        console.log(util.numberFormat(req.body.result.parameters["amount"]))
+                        console.log(req.body.result.parameters["currency-from"])
+                        console.log(req.body.result.parameters["currency-to"])
+                        console.log(util.numberFormat(result))
                         res.send({
-                            messages: [ { type: 0, speech: `Right now, if you exchange ${util.numberFormat(req.body.result.parameters["amount"])} ${req.body.result.parameters["currency-from"]} to ${req.body.result.parameters["currency-to"]}, you'll get ${util.numberFormat(result)} ${req.body.result.parameters["currency-to"]}` }],
+                            messages: [{
+                                type: 0,
+                                speech: `Right now, if you exchange ${util.numberFormat(req.body.result.parameters["amount"])} ${req.body.result.parameters["currency-from"]} to ${req.body.result.parameters["currency-to"]}, you'll get ${util.numberFormat(result)} ${req.body.result.parameters["currency-to"]}`
+                            }],
                             source: "Penguin Webhook"
                         });
                     }

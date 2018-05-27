@@ -18,9 +18,10 @@ app.post("/webhook", (req, res)=>{
         let actions = req.body.result.action.split(".");
         switch (actions[0]) {
             case "currency":
-            console.log(req.body)
                 if(req.body.result && req.body.result.parameters && req.body.result.parameters["currency-from"] && req.body.result.parameters["currency-to"]) {
                     currency.convertCurrency(req.body.result.parameters["currency-from"], req.body.result.parameters["currency-to"], req.body.result.parameters["amount"] || 1, (err, result)=>{
+                        
+                console.log(result)
                         if(err) console.error(err)
                         else {
                             res.json({

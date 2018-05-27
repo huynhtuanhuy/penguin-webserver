@@ -18,35 +18,30 @@ app.post("/webhook", (req, res)=>{
     else if(!req.headers.masterkey || req.headers.masterkey != configs.masterKey) res.status(400).send({ success: 0, msg: 'Master key is wrong or missing!' })
     else {
         let actions = req.body.result && req.body.result.action ? req.body.result.action.split(".") : "";
-        switch (actions[0]) {
-            case "currency": {
-                    if(req.body.result && req.body.result.parameters && req.body.result.parameters["currency-from"] && req.body.result.parameters["currency-to"]) {
-                        currency.convertCurrency(req.body.result.parameters["currency-from"], req.body.result.parameters["currency-to"], req.body.result.parameters["amount"] || 1, (err, result)=>{
-                            if(err) console.error(err)
-                            else {
-                                console.log(req.body)
-                                return res.send({
-                                    messages: [ { type: 0, speech: `Right now, if you exchange ${util.numberFormat(req.body.result.parameters["amount"])} ${req.body.result.parameters["currency-from"]} to ${req.body.result.parameters["currency-to"]}, you'll get ${util.numberFormat(result)} ${req.body.result.parameters["currency-to"]}` }],
-                                    source: "Penguin Webhook"
-                                });
-                            }
-                        });
-                    } else {
+        if(actions[0] == "currency") {
+            if(req.body.result && req.body.result.parameters && req.body.result.parameters["currency-from"] && req.body.result.parameters["currency-to"]) {
+                currency.convertCurrency(req.body.result.parameters["currency-from"], req.body.result.parameters["currency-to"], req.body.result.parameters["amount"] || 1, (err, result)=>{
+                    if(err) console.error(err)
+                    else {
+                        console.log(req.body)
                         return res.send({
-                            messages: [ { type: 0, speech: "Could you provide me more details?" }],
+                            messages: [ { type: 0, speech: `Right now, if you exchange ${util.numberFormat(req.body.result.parameters["amount"])} ${req.body.result.parameters["currency-from"]} to ${req.body.result.parameters["currency-to"]}, you'll get ${util.numberFormat(result)} ${req.body.result.parameters["currency-to"]}` }],
                             source: "Penguin Webhook"
                         });
                     }
-                }
-                break;
-            default: {
-                    console.log("abc")
-                    return res.send({
-                        messages: [ { type: 0, speech: "I didn't get that." }],
-                        source: "Penguin Webhook"
-                    });
-                }
-                break;
+                });
+            } else {
+                return res.send({
+                    messages: [ { type: 0, speech: "Could you provide me more details?" }],
+                    source: "Penguin Webhook"
+                });
+            }
+        } else {
+            console.log("abc")
+            return res.send({
+                messages: [ { type: 0, speech: "I didn't get that." }],
+                source: "Penguin Webhook"
+            });
         }
     }
 });

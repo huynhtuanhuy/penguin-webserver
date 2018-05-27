@@ -35,19 +35,18 @@ app.post("/webhook", (req, res)=>{
                         });
                     }
                 });
-            } 
-            // else {
-            //     return res.send({
-            //         messages: [ { type: 0, speech: "Could you provide me more details?" }],
-            //         source: "Penguin Webhook"
-            //     });
-            // }
+            } else {
+                return res.send({
+                    messages: [ { type: 0, speech: "Could you provide me more details?" }],
+                    source: "Penguin Webhook"
+                });
+            }
         } else {
             console.log("abc")
-            return res.send({
-                messages: [ { type: 0, speech: "I didn't get that." }],
-                source: "Penguin Webhook"
-            });
+            // return res.send({
+            //     messages: [ { type: 0, speech: "I didn't get that." }],
+            //     source: "Penguin Webhook"
+            // });
         }
     }
 });

@@ -16,8 +16,8 @@ app.use(bodyParser.json());
 app.post("/webhook", (req, res)=>{
     if(!req.body) res.status(400).send({ success: 0, msg: 'Body data is empty!' })
     else if(!req.headers.masterkey || req.headers.masterkey != configs.masterKey) res.status(400).send({ success: 0, msg: 'Master key is wrong or missing!' })
-    else {
-        let actions = req.body.result && req.body.result.action ? req.body.result.action : null;
+    else if(req.body.result && req.body.result.action) {
+        let actions = req.body.result.action;
         console.log(actions)
         if(actions == "currency.convert") {
             if(req.body.result && req.body.result.parameters && req.body.result.parameters["currency-from"] && req.body.result.parameters["currency-to"]) {
@@ -30,11 +30,10 @@ app.post("/webhook", (req, res)=>{
                         console.log(util.numberFormat(result))
                         let data = `Right now, if you exchange ${util.numberFormat(req.body.result.parameters["amount"])} ${req.body.result.parameters["currency-from"]} to ${req.body.result.parameters["currency-to"]}, you'll get ${util.numberFormat(result)} ${req.body.result.parameters["currency-to"]}`;
                         console.log(data)
-                        res.send({
+                        res.status(200).json({
                             messages: [ { type: 0, speech: data }],
                             source: "Penguin Webhook"
                         });
-                        return false;
                     }
                 });
             } else {
@@ -42,7 +41,6 @@ app.post("/webhook", (req, res)=>{
                     messages: [ { type: 0, speech: "Could you provide me more details?" }],
                     source: "Penguin Webhook"
                 });
-                return false;
             }
         } else {
             console.log("abc")
@@ -50,7 +48,6 @@ app.post("/webhook", (req, res)=>{
             //     messages: [ { type: 0, speech: "I didn't get that." }],
             //     source: "Penguin Webhook"
             // });
-            return false;
         }
     }
 });

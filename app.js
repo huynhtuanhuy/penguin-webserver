@@ -21,11 +21,10 @@ app.post("/webhook", (req, res)=>{
         switch (actions[0]) {
             case "currency":
                 if(req.body.result && req.body.result.parameters && req.body.result.parameters["currency-from"] && req.body.result.parameters["currency-to"]) {
-                    
-                console.log(JSON.stringify(req.body))
                     currency.convertCurrency(req.body.result.parameters["currency-from"], req.body.result.parameters["currency-to"], req.body.result.parameters["amount"] || 1, (err, result)=>{
                         if(err) console.error(err)
                         else {
+                            console.log(JSON.stringify(req.body))
                             res.json({
                                 messages: [ { type: 0, speech: `Right now, if you exchange ${util.numberFormat(req.body.result.parameters["amount"])} ${req.body.result.parameters["currency-from"]} to ${req.body.result.parameters["currency-to"]}, you'll get ${util.numberFormat(result)} ${req.body.result.parameters["currency-to"]}` }],
                                 source: "Penguin Webhook"

@@ -29,16 +29,16 @@ app.post("/webhook", (req, res)=>{
                         console.log(req.body.result.parameters["currency-to"])
                         console.log(util.numberFormat(result))
                         let data = `Right now, if you exchange ${util.numberFormat(req.body.result.parameters["amount"])} ${req.body.result.parameters["currency-from"]} to ${req.body.result.parameters["currency-to"]}, you'll get ${util.numberFormat(result)} ${req.body.result.parameters["currency-to"]}`;
-                        console.log(data)
+                        console.log(res)
                         res.status(200).json({
-                            messages: [ { type: 0, speech: data }],
+                            messages: [{ type: 0, speech: data }],
                             source: "Penguin Webhook"
                         });
                     }
                 });
             } else {
-                return res.send({
-                    messages: [ { type: 0, speech: "Could you provide me more details?" }],
+                res.send({
+                    messages: [{ type: 0, speech: "Could you provide me more details?" }],
                     source: "Penguin Webhook"
                 });
             }

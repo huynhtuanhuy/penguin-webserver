@@ -37,10 +37,8 @@ app.post("/webhook", (req, res)=>{
                 });
             }
         } else if(actions == "units.convert") {
-            // console.log(req.body.result.parameters);
             if(req.body.result && req.body.result.parameters && req.body.result.parameters["unit-from"] && req.body.result.parameters["unit-to"]) {
                 let result = convert.convertUnit(req.body.result.parameters["unit-from"], req.body.result.parameters["unit-to"], req.body.result.parameters["amount"]);
-                console.log(result)
                 let speech = `${util.numberFormat(req.body.result.parameters["amount"])}${req.body.result.parameters["unit-from"]} equals ${util.numberFormat(result.toFixed(2))}${req.body.result.parameters["unit-to"]}`;
                 res.send({
                     messages: [{ type: 0, speech: speech }],
@@ -62,7 +60,7 @@ app.post("/webhook", (req, res)=>{
 });
 
 app.use("/", (req, res)=>{
-    res.send("Penguin ver1");
+    res.send("Penguin ver 1");
 });
 
 const port = process.env.PORT || 9669;

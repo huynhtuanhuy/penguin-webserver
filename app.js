@@ -37,20 +37,21 @@ app.post("/webhook", (req, res)=>{
                 });
             }
         } else if(actions == "units.convert") {
-            console.log(req.body.result.parameters);
-            // if(req.body.result && req.body.result.parameters && req.body.result.parameters["unit-from"] && req.body.result.parameters["unit-to"]) {
-            //     let result = convert.convertUnit(req.body.result.parameters["unit-from"], req.body.result.parameters["unit-to"], req.body.result.parameters["amount"]);
-            //     let speech = `${util.numberFormat(req.body.result.parameters["amount"])}${req.body.result.parameters["unit-from"]} equals ${util.numberFormat(result.toFixed(2))}${req.body.result.parameters["unit-to"]}`;
-            //     res.send({
-            //         messages: [{ type: 0, speech: speech }],
-            //         source: "Penguin Webhook"
-            //     });
-            // } else {
-            //     res.send({
-            //         messages: [{ type: 0, speech: "Not enough parameter, please try again!" }],
-            //         source: "Penguin Webhook"
-            //     });
-            // }
+            // console.log(req.body.result.parameters);
+            if(req.body.result && req.body.result.parameters && req.body.result.parameters["unit-from"] && req.body.result.parameters["unit-to"]) {
+                let result = convert.convertUnit(req.body.result.parameters["unit-from"], req.body.result.parameters["unit-to"], req.body.result.parameters["amount"]);
+                console.log(result)
+                let speech = `${util.numberFormat(req.body.result.parameters["amount"])}${req.body.result.parameters["unit-from"]} equals ${util.numberFormat(result.toFixed(2))}${req.body.result.parameters["unit-to"]}`;
+                res.send({
+                    messages: [{ type: 0, speech: speech }],
+                    source: "Penguin Webhook"
+                });
+            } else {
+                res.send({
+                    messages: [{ type: 0, speech: "Not enough parameter, please try again!" }],
+                    source: "Penguin Webhook"
+                });
+            }
         } else {
             return res.send({
                 messages: [ { type: 0, speech: "I didn't get that." }],

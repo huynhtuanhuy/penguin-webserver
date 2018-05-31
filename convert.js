@@ -1,7 +1,8 @@
 const axios = require('axios');
+const convertUnits = require('convert-units');
 
 const convertCurrency = (from, to, amount, cb) => {
-    let url = `https://free.currencyconverterapi.com/api/v5/convert?q=${from}_${to}&compact=y`
+    let url = `https://free.currencyconverterapi.com/api/v5/convert?q=${from}_${to}&compact=y`;
 
     axios.get(url)
         .then(function (response) {
@@ -14,6 +15,11 @@ const convertCurrency = (from, to, amount, cb) => {
         });
 }
 
+const convertUnit = (from, to, amount) => {
+    return convertUnits(amount).from(from).to(to);
+}
+
 module.exports = {
-    convertCurrency
+    convertCurrency,
+    convertUnit
 }

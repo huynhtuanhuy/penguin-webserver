@@ -51,7 +51,7 @@ app.post("/webhook", (req, res)=>{
                 });
             }
         } else if(actions == "units.convert") {
-            console.log(req.body.result.parameters["unit-to"]);
+            console.log(req.body.result.parameters);
             // if(req.body.result && req.body.result.parameters && req.body.result.parameters["unit-from"] && req.body.result.parameters["unit-to"]) {
             //     let result = convert.convertUnit(req.body.result.parameters["unit-from"], req.body.result.parameters["unit-to"], req.body.result.parameters["amount"]);
             //     let speech = `${util.numberFormat(req.body.result.parameters["amount"])}${req.body.result.parameters["unit-from"]} equals ${util.numberFormat(result.toFixed(2))}${req.body.result.parameters["unit-to"]}`;

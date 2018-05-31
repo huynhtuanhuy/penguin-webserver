@@ -39,7 +39,7 @@ app.post("/webhook", (req, res)=>{
         } else if(actions == "units.convert") {
             if(req.body.result && req.body.result.parameters && req.body.result.parameters["unit-from"] && req.body.result.parameters["unit-to"]) {
                 let result = convert.convertUnit(req.body.result.parameters["unit-from"], req.body.result.parameters["unit-to"], req.body.result.parameters["amount"]);
-                let speech = `${util.numberFormat(req.body.result.parameters["amount"])}${req.body.result.parameters["unit-from"]} equals ${util.numberFormat(result)}${req.body.result.parameters["currency-to"]}`;
+                let speech = `${util.numberFormat(req.body.result.parameters["amount"])}${req.body.result.parameters["unit-from"]} equals ${util.numberFormat(result.toFixed(2))}${req.body.result.parameters["currency-to"]}`;
                 res.send({
                     messages: [{ type: 0, speech: speech }],
                     source: "Penguin Webhook"
@@ -53,7 +53,7 @@ app.post("/webhook", (req, res)=>{
         } else if(actions == "units.convert") {
             if(req.body.result && req.body.result.parameters && req.body.result.parameters["unit-from"] && req.body.result.parameters["unit-to"]) {
                 let result = convert.convertUnit(req.body.result.parameters["unit-from"], req.body.result.parameters["unit-to"], req.body.result.parameters["amount"]);
-                let speech = `${util.numberFormat(req.body.result.parameters["amount"])}${req.body.result.parameters["unit-from"]} equals ${util.numberFormat(result)}${req.body.result.parameters["currency-to"]}`;
+                let speech = `${util.numberFormat(req.body.result.parameters["amount"])}${req.body.result.parameters["unit-from"]} equals ${util.numberFormat(result.toFixed(2))}${req.body.result.parameters["unit-to"]}`;
                 res.send({
                     messages: [{ type: 0, speech: speech }],
                     source: "Penguin Webhook"
